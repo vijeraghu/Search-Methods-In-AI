@@ -245,41 +245,13 @@ def find_solution_with_user_input():
 
 
 # Example usage
-def try_all_start_states(n):
-    for boy_start_x in range(1, n+1):
-        for boy_start_y in range(1, n+1):
-            for cat_start_x in range(1, n+1):
-                for cat_start_y in range(1, n+1):
-                    boy_start = (boy_start_x, boy_start_y)
-                    cat_start = (cat_start_x, cat_start_y)
-                    
-                    # Ensure the boy and cat don't start in the same position
-                    if boy_start != cat_start:
-                        print(f"Trying boy starting at {boy_start} and cat starting at {cat_start}...")
-                        
-                        toys_collected = [[0] * n for _ in range(n)]  # No toys collected initially
-                        problem = Problem(n, boy_start, cat_start, toys_collected)
-                        
-                        solution_node = best_first_search(problem)
-                        
-                        if solution_node:
-                            print(f"Solution found with boy starting at {boy_start} and cat starting at {cat_start}!")
-                            print("Boy's path:", solution_node.boy_path)
-                            print("Cat's path:", solution_node.cat_path)
-                            print("Number of nodes expanded:", len(solution_node.boy_path))
-                            checkAllCellsVisited(solution_node.visited_positions, n)
-                            animate_paths(solution_node.boy_path, solution_node.cat_path)
-                            return solution_node, boy_start, cat_start  # Return when a solution is found
-                        else:
-                            print(f"No solution found for this start state.")
-    
-    print("No solution found for any starting configuration.")
-    return None, None, None  # No solution found for any start state
-
-
-# Example usage for an 8x8 grid
-solution_node, boy_start, cat_start = try_all_start_states(8)
+solution_node, boy_start, cat_start = find_solution_with_user_input()
 if solution_node:
     print(f"Solution found with boy starting at {boy_start} and cat starting at {cat_start}!")
+    print("Boy's path:", solution_node.boy_path)
+    print("Cat's path:", solution_node.cat_path)
+    print("Number of nodes expanded:", len(solution_node.boy_path))
+    checkAllCellsVisited(solution_node.visited_positions, solution_node.boy_path[0][0])
+    animate_paths(solution_node.boy_path, solution_node.cat_path)
 else:
-    print("No solution was found with any starting positions.")
+    print(f"No solution found with boy starting at {boy_start} and cat starting at {cat_start}.")
